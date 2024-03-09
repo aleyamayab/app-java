@@ -1,4 +1,4 @@
-FROM doptopenjdk:11-jre-hotspot-alpine3.14
+FROM adoptopenjdk:11-jre-hotspot
 COPY . /app
 WORKDIR /app
 RUN javac app_java.java
