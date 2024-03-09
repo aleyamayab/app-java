@@ -6,7 +6,7 @@ spec:
   replicas: 2
   selector:
     matchLabels:
-      app: hola_mund_java17
+      app: hola-mundo-java17-deployment
   template:
     metadata:
       labels:
@@ -24,3 +24,4 @@ spec:
           requests:
             cpu: "0.5"
             memory: "256Mi"
+
