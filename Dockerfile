@@ -1,5 +1,11 @@
-FROM adoptopenjdk:11-jdk-hotspot
-COPY . /app
+# Usa una imagen base de OpenJDK
+FROM openjdk:11
+
+# Copia el archivo compilado de la aplicación al contenedor
+COPY AppJava.class /app/app_java.class
+
+# Establece el directorio de trabajo
 WORKDIR /app
-RUN javac app_java.java
+
+# Ejecuta la aplicación Java
 CMD ["java", "app_java"]
