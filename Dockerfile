@@ -1,11 +1,14 @@
 # Usa una imagen base de OpenJDK
 FROM openjdk:11
 
-# Copia el archivo JAR de la aplicación al contenedor
-COPY app_java.jar /app/app_java.jar
+# Copia los archivos fuente de la aplicación al contenedor
+COPY app_java.java /app/app_java.java
 
 # Establece el directorio de trabajo
 WORKDIR /app
 
+# Compila la aplicación Java
+RUN javac -target 11 app_java.java
+
 # Ejecuta la aplicación Java
-CMD ["java", "-jar", "app_java.jar"]
+CMD ["java", "app_java"]
