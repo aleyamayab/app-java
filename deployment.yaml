@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: hola-mundo-container
-        image: 654654145084.dkr.ecr.us-east-1.amazonaws.com/app_java:latest
+        image: 654654145084.dkr.ecr.us-east-1.amazonaws.com/app_java
         ports:
         - containerPort: 8080
         resources:
