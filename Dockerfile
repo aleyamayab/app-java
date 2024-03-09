@@ -2,7 +2,7 @@
 FROM openjdk:11
 
 # Copia el archivo compilado de la aplicación al contenedor
-COPY AppJava.class /app/app_java.class
+COPY app_java.class /app/app_java.class
 
 # Establece el directorio de trabajo
 WORKDIR /app
