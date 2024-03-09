@@ -3,11 +3,13 @@ kind: Service
 metadata:
   name: hola-mundo-java17-service
 spec:
+  type: NodePort
   selector:
-    app: hola-mundo-java17
+    app: hola-mundo-deployment
   ports:
-  - protocol: TCP
+  - name: http
+    protocol: TCP
     port: 80
     targetPort: 8080
-  type: LoadBalancer
+
 
