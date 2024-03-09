@@ -17,11 +17,5 @@ spec:
         image: 654654145084.dkr.ecr.us-east-1.amazonaws.com/hola_mundo_java:latest
         ports:
         - containerPort: 8080
-        resources:
-          limits:
-            cpu: "1"
-            memory: "512Mi"
-          requests:
-            cpu: "0.5"
-            memory: "256Mi"
+
 
