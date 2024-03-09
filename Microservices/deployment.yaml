@@ -17,5 +17,12 @@ spec:
         image: 654654145084.dkr.ecr.us-east-1.amazonaws.com/app_java:latest
         ports:
         - containerPort: 8080
+        resources:
+          limits:
+            cpu: 500m
+            memory: 512Mi
+          requests:
+            cpu: 200m
+            memory: 256Mi
 
 
