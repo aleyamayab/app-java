@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hola_mundo_java17_deployment
+  name: hola-mundo-java17-deployment
 spec:
   replicas: 2
   selector:
@@ -10,10 +10,10 @@ spec:
   template:
     metadata:
       labels:
-        app: hola-mundo-java17
+        app: hola-mundo-java17-deployment
     spec:
       containers:
-      - name: hola_mundo_java17
+      - name: hola-mundo-java17-container
         image: 654654145084.dkr.ecr.us-east-1.amazonaws.com/hola_mundo_java:latest
         ports:
         - containerPort: 8080
