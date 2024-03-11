@@ -56,6 +56,12 @@ stage('SonarQube Analysis') {
     }
 }
 
+        stage ('Quality Gate'){
+            steps {
+                timeout (time: 2, unit: 'MINUTES' 'Deploying....'
+                    waitForQualityGate aborPipeline: true
+            }
+        }
 
         stage('Deploy') {
             steps {
