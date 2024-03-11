@@ -25,6 +25,7 @@ pipeline {
             steps {
                 // Establecer el directorio de trabajo en la carpeta que contiene pom.xml
                 dir('my-app') {
+                    sh 'rm -rf target'
                     // Ejecutar el análisis de SonarQube
                     withSonarQubeEnv(installationName: 'sq1') {
                         sh "mvn sonar:sonar -Dsonar.sources=src -Dsonar.java.binaries=target/classes"
