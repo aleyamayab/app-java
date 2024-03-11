@@ -36,11 +36,12 @@ pipeline {
         stage('Quality Gate') {
             steps {
                 timeout(time: 2, unit: 'MINUTES') {
+                    script {
                     // Utiliza waitForQualityGate y almacena el resultado en la variable qg
-                    def qg = waitForQualityGate()
+                        def qg = waitForQualityGate()
 
                     // Verifica el estado del Quality Gate
-                    if (qg.status != 'OK') {
+                        if (qg.status != 'OK') {
                         error "Quality Gate failure: ${qg.status}"
                     }
                 }
