@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        label 'jenkis-slave' 
+        label 'jenkis-slave'
     }
 
     tools {
@@ -37,6 +37,23 @@ pipeline {
                 script {
                     dir('my-app') {
                         sh "mvn test"
+                    }
+                }
+            }
+        }
+
+        stage('SonarQube Analysis') {
+            steps {
+                script {
+                    // Establecer el directorio de trabajo en la carpeta que contiene pom.xml
+                    dir('my-app') {
+                        // Limpiar el directorio de trabajo
+                        deleteDir()
+                        
+                        // Ejecutar el análisis de SonarQube
+                        withSonarQubeEnv(installationName: 'sq1') {
+                            sh "mvn sonar:sonar"
+                        }
                     }
                 }
             }
