@@ -18,7 +18,7 @@ pipeline {
                         deleteDir()
                         
                         // Ejecutar el análisis de SonarQube
-                        withSonarQubeEnv('sq1') {
+                        withSonarQubeEnv(installationName: 'sq1') {
                             sh "mvn sonar:sonar"
                         }
                     }
