@@ -22,13 +22,14 @@ pipeline {
         }
 
         stage('SonarQube Analysis') {
-            steps {
+            steps { 
                 // Establecer el directorio de trabajo en la carpeta que contiene pom.xml
                 dir('my-app') {
+                    // Eliminar el directorio target para evitar conflictos
                     sh 'rm -rf target'
                     // Ejecutar el análisis de SonarQube
                     withSonarQubeEnv(installationName: 'sq1') {
-                        sh "mvn sonar:sonar -Dsonar.sources=src/main/java -Dsonar.exclusions=src/test/java/**/*.java -Dsonar.java.binaries=target/classes"
+                        sh "mvn clean verify sonar:sonar -Dsonar.sources=src/main/java -Dsonar.java.binaries=target"
                     }
                 }
             }
