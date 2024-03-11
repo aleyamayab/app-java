@@ -27,7 +27,7 @@ pipeline {
                 dir('my-app') {
                     // Ejecutar el análisis de SonarQube
                     withSonarQubeEnv(installationName: 'sq1') {
-                        sh "mvn sonar:sonar"
+                        sh "mvn sonar:sonar -Dsonar.sources=src -Dsonar.java.binaries=target/classes"
                     }
                 }
             }
