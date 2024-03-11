@@ -16,7 +16,7 @@ pipeline {
     stages {
         stage('Buscar  SCM') {
             steps {
-               git branch: 'main', credentialsId: 'github', url: 'https://github.com/aleyamayab/app-java/' 
+               git branch: 'main', credentialsId: 'github', url: 'https://github.com/aleyamayab/app-java' 
             }
         }
 
