@@ -28,7 +28,7 @@ pipeline {
                     sh 'rm -rf target'
                     // Ejecutar el análisis de SonarQube
                     withSonarQubeEnv(installationName: 'sq1') {
-                        sh "mvn sonar:sonar -Dsonar.sources=src -Dsonar.java.binaries=target/classes"
+                        sh "mvn sonar:sonar -Dsonar.sources=src/main/java -Dsonar.exclusions=src/test/java/**/*.java -Dsonar.java.binaries=target/classes"
                     }
                 }
             }
