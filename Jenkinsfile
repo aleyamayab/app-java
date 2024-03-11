@@ -40,19 +40,6 @@ pipeline {
             }
         }
 
-        stage('Analisis Sonarqube') {
-            steps {
-                script {
-                    dir('my-app') {
-                        deleteDir() // Limpiar el directorio de trabajo
-                        withSonarQubeEnv(installationName: 'sq1') {
-                            sh "mvn sonar:sonar"
-                        }
-                    }
-                }
-            }
-        }
-
         stage('Deploy') {
             steps {
                 echo 'Deploying....'
