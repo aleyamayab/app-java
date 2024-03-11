@@ -1,12 +1,14 @@
 pipeline {
     agent {
-        label 'jenkis-slave'
+        label 'jenkins-slave'
     }
 
     tools {
         jdk 'java17'
         maven 'maven'
     }
+
+    stages {
         stage('Build app') {
             steps {
                 script {
@@ -17,7 +19,7 @@ pipeline {
                 }
             }
         }
-    stages {
+
         stage('Analisis Sonarqube') {
             steps {
                 script {
@@ -25,7 +27,7 @@ pipeline {
                     dir('my-app') {
                         // Limpiar el directorio de trabajo
                         deleteDir()
-                        
+
                         // Ejecutar el análisis de SonarQube
                         withSonarQubeEnv(installationName: 'sq1') {
                             sh "mvn sonar:sonar"
@@ -36,5 +38,3 @@ pipeline {
         }
     }
 }
-
-
