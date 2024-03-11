@@ -31,6 +31,16 @@ pipeline {
             }
         }
 
+        stage('Analisis Sonarqube') {
+            steps {
+                Script{
+                    withSonarQubeEnv('credentialsId: jenkins-sonarquebe') {
+                    sh "mv sonar:sonar"
+                     }
+                 }
+            }
+        }
+        
         stage('Deploy') {
             steps {
                 echo 'Deploying....'
