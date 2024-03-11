@@ -1,12 +1,29 @@
+pipeline {
+    agent {
+        label 'JENKINS-SLAVE'
+    }
+
+    tools {
+        jdk 'java17'
+        maven 'maven_script'
+    }
+
+    stages {
         stage('Analisis Sonarqube') {
             steps {
                 script {
+                    // Establecer el directorio de trabajo en la carpeta que contiene pom.xml
                     dir('my-app') {
-                        deleteDir() // Limpiar el directorio de trabajo
-                        withSonarQubeEnv(installationName: 'sq1') {
+                        // Limpiar el directorio de trabajo
+                        deleteDir()
+                        
+                        // Ejecutar el análisis de SonarQube
+                        withSonarQubeEnv('sq1') {
                             sh "mvn sonar:sonar"
                         }
                     }
                 }
             }
         }
+    }
+}
