@@ -7,7 +7,16 @@ pipeline {
         jdk 'java17'
         maven 'maven'
     }
-
+        stage('Build app') {
+            steps {
+                script {
+                    // Establecer el directorio de trabajo en la carpeta que contiene pom.xml
+                    dir('my-app') {
+                        sh "mvn clean package"
+                    }
+                }
+            }
+        }
     stages {
         stage('Analisis Sonarqube') {
             steps {
