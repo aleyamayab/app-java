@@ -50,5 +50,33 @@ pipeline {
                         // Ejecutar el análisis de SonarQube
                         withSonarQubeEnv(installationName: 'sq1') {
                             sh "mvn sonar:sonar"
-                
+                        }
+                    }
+                }
+            }
+        }
 
+        stage('Quality Gate') {
+            steps {
+                timeout(time: 2, unit: 'MINUTES') {
+                    script {
+                        // Utiliza waitForQualityGate y almacena el resultado en la variable qg
+                        def qg = waitForQualityGate()
+
+                        // Verifica el estado del Quality Gate
+                        if (qg.status != 'OK') {
+                            error "Quality Gate failure: ${qg.status}"
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo 'Deploying....'
+                // Agrega aquí los pasos de implementación si es necesario
+            }
+        }
+    }
+}
