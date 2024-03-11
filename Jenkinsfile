@@ -46,7 +46,7 @@ pipeline {
             steps {
                 script {
                     // Establecer el directorio de trabajo en la carpeta que contiene pom.xml
-                    dir('my-app') {
+                    dir('/home/ec2-user/workspace/Despliegue/my-app') {
                         // Limpiar el directorio de trabajo
                         deleteDir()
                         
