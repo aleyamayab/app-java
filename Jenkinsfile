@@ -23,13 +23,11 @@ pipeline {
 
         stage('SonarQube Analysis') {
             steps {
-                script {
-                    // Establecer el directorio de trabajo en la carpeta que contiene pom.xml
-                    dir('my-app') {
-                        // Ejecutar el análisis de SonarQube
-                        withSonarQubeEnv(installationName: 'sq1') {
-                            sh "mvn sonar:sonar"
-                        }
+                // Establecer el directorio de trabajo en la carpeta que contiene pom.xml
+                dir('my-app') {
+                    // Ejecutar el análisis de SonarQube
+                    withSonarQubeEnv(installationName: 'sq1') {
+                        sh "mvn sonar:sonar"
                     }
                 }
             }
@@ -38,14 +36,12 @@ pipeline {
         stage('Quality Gate') {
             steps {
                 timeout(time: 2, unit: 'MINUTES') {
-                    script {
-                        // Utiliza waitForQualityGate y almacena el resultado en la variable qg
-                        def qg = waitForQualityGate()
+                    // Utiliza waitForQualityGate y almacena el resultado en la variable qg
+                    def qg = waitForQualityGate()
 
-                        // Verifica el estado del Quality Gate
-                        if (qg.status != 'OK') {
-                            error "Quality Gate failure: ${qg.status}"
-                        }
+                    // Verifica el estado del Quality Gate
+                    if (qg.status != 'OK') {
+                        error "Quality Gate failure: ${qg.status}"
                     }
                 }
             }
@@ -53,21 +49,17 @@ pipeline {
 
         stage('Build app') {
             steps {
-                script {
-                    // Establecer el directorio de trabajo en la carpeta que contiene pom.xml
-                    dir('my-app') {
-                        sh "mvn clean package"
-                    }
+                // Establecer el directorio de trabajo en la carpeta que contiene pom.xml
+                dir('my-app') {
+                    sh "mvn clean package"
                 }
             }
         }
 
         stage('Test app') {
             steps {
-                script {
-                    dir('my-app') {
-                        sh "mvn test"
-                    }
+                dir('my-app') {
+                    sh "mvn test"
                 }
             }
         }
