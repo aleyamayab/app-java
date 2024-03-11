@@ -42,22 +42,20 @@ pipeline {
             }
         }
 
-        stage('SonarQube Analysis') {
-            steps {
-                script {
-                    // Establecer el directorio de trabajo en la carpeta que contiene pom.xml
-                    dir('/home/ec2-user/workspace/Despliegue/my-app') {
-                        // Limpiar el directorio de trabajo
-                        deleteDir()
-                        
-                        // Ejecutar el análisis de SonarQube
-                        withSonarQubeEnv(installationName: 'sq1') {
-                            sh "mvn sonar:sonar"
-                        }
-                    }
+stage('SonarQube Analysis') {
+    steps {
+        script {
+            // Establecer el directorio de trabajo en la carpeta que contiene pom.xml
+            dir('/home/ec2-user/workspace/Despliegue/my-app') {
+                // Ejecutar el análisis de SonarQube
+                withSonarQubeEnv(installationName: 'sq1') {
+                    sh "mvn sonar:sonar"
                 }
             }
         }
+    }
+}
+
 
         stage('Deploy') {
             steps {
