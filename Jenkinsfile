@@ -42,33 +42,13 @@ pipeline {
             }
         }
 
-stage('SonarQube Analysis') {
-    steps {
-        script {
-            // Establecer el directorio de trabajo en la carpeta que contiene pom.xml
-            dir('/home/ec2-user/workspace/Despliegue/my-app') {
-                // Ejecutar el análisis de SonarQube
-                withSonarQubeEnv(installationName: 'sq1') {
-                    sh "mvn sonar:sonar"
-                }
-            }
-        }
-    }
-}
-
-        stage ('Quality Gate'){
+        stage('SonarQube Analysis') {
             steps {
-                timeout (time: 2, unit: 'MINUTES')
-                    waitForQualityGate aborPipeline: true
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                echo 'Deploying....'
-                // Agrega aquí los pasos de implementación si es necesario
-            }
-        }
-    }
-}
+                script {
+                    // Establecer el directorio de trabajo en la carpeta que contiene pom.xml
+                    dir('/home/ec2-user/workspace/Despliegue/my-app') {
+                        // Ejecutar el análisis de SonarQube
+                        withSonarQubeEnv(installationName: 'sq1') {
+                            sh "mvn sonar:sonar"
+                
 
