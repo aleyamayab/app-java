@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        label 'jenkis-slave'
+        label 'jenkins-slave'
     }
 
     tools {
@@ -21,32 +21,11 @@ pipeline {
             }
         }
 
-        stage('Build app') {
-            steps {
-                script {
-                    // Establecer el directorio de trabajo en la carpeta que contiene pom.xml
-                    dir('my-app') {
-                        sh "mvn clean package"
-                    }
-                }
-            }
-        }
-
-        stage('Test app') {
-            steps {
-                script {
-                    dir('my-app') {
-                        sh "mvn test"
-                    }
-                }
-            }
-        }
-
         stage('SonarQube Analysis') {
             steps {
                 script {
                     // Establecer el directorio de trabajo en la carpeta que contiene pom.xml
-                    dir('/home/ec2-user/workspace/Despliegue/my-app') {
+                    dir('my-app') {
                         // Ejecutar el análisis de SonarQube
                         withSonarQubeEnv(installationName: 'sq1') {
                             sh "mvn sonar:sonar"
@@ -72,6 +51,27 @@ pipeline {
             }
         }
 
+        stage('Build app') {
+            steps {
+                script {
+                    // Establecer el directorio de trabajo en la carpeta que contiene pom.xml
+                    dir('my-app') {
+                        sh "mvn clean package"
+                    }
+                }
+            }
+        }
+
+        stage('Test app') {
+            steps {
+                script {
+                    dir('my-app') {
+                        sh "mvn test"
+                    }
+                }
+            }
+        }
+
         stage('Deploy') {
             steps {
                 echo 'Deploying....'
@@ -80,3 +80,4 @@ pipeline {
         }
     }
 }
+
