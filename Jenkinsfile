@@ -44,6 +44,7 @@ pipeline {
             steps {
                 script {
                     dir('my-app') {
+                        deleteDir() // Limpiar el directorio de trabajo
                         withSonarQubeEnv('jenkins-sonarquebe') {
                             sh "mvn sonar:sonar"
                         }
