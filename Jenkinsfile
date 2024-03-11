@@ -21,32 +21,43 @@ pipeline {
 
         stage('Build app') {
             steps {
-                sh "mvn clean package"
+                script {
+                    // Establecer el directorio de trabajo en la carpeta que contiene pom.xml
+                    dir('my-app') {
+                        sh "mvn clean package"
+                    }
+                }
             }
         }
 
         stage('Test app') {
             steps {
-                sh "mvn test"
+                script {
+                    dir('my-app') {
+                        sh "mvn test"
+                    }
+                }
             }
         }
 
         stage('Analisis Sonarqube') {
             steps {
-                Script{
-                    withSonarQubeEnv('credentialsId: jenkins-sonarquebe') {
-                    sh "mv sonar:sonar"
-                     }
-                 }
+                script {
+                    dir('my-app') {
+                        withSonarQubeEnv('jenkins-sonarquebe') {
+                            sh "mvn sonar:sonar"
+                        }
+                    }
+                }
             }
         }
-        
+
         stage('Deploy') {
             steps {
                 echo 'Deploying....'
+                // Agrega aquí los pasos de implementación si es necesario
             }
         }
     }
 }
-
 
