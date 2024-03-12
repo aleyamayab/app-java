@@ -51,50 +51,41 @@ pipeline {
             }
         }
 
-        stage('Build app') {
-            steps {
-                // Establecer el directorio de trabajo en la carpeta que contiene pom.xml
-                dir('my-app') {
-                    sh "mvn clean package"
+        stages {
+            stage('Limpiar, Construir y Testear') {
+                steps {
+                    dir('/home/ec2-user/workspace/Creation-image/my-app') {
+                        script {
+                            // Limpia, construye y prueba el proyecto Maven
+                            sh 'mvn clean package'
+                            sh 'mvn test'
+                    }
                 }
             }
         }
 
-        stage('Test app') {
+        stage('Construir y Subir Imagen Docker') {
             steps {
-                dir('my-app') {
-                    sh "mvn test"
-                }
-            }
-        }
+                dir('/home/ec2-user/workspace/Creation-image/my-app') {
+                    script {
+                        // Define las variables
+                        def AWS_ACCOUNT_ID = '654654145084'
+                        def IMAGE_TAG = "v1.0.${BUILD_NUMBER}"
+                        def REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
 
-        stage('Build and Push Docker Image') {
-            steps {
-                script {
-                    // Define las variables
-                    def AWS_ACCOUNT_ID="654654145084"
-                    def AWS_DEFAULT_REGION="us-east-1" 
-                    def IMAGE_REPO_NAME="my-app-java"
-                    def IMAGE_TAG="v1.0.${BUILD_NUMBER}"
-                    def REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
+                        // Construye la imagen Docker
+                        sh "docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG ."
 
-                    // Cambia al directorio de trabajo donde se descarga la aplicación y se genera el paquete Maven
-                    dir('/home/ec2-user/workspace/Despliegue/my-app') {
-                        // Construye la imagen de Docker
-                        def dockerImage = "$IMAGE_REPO_NAME:$IMAGE_TAG"
-                        sh "docker build -t $dockerImage ."
-                        
                         // Autentica con AWS ECR
-                        withCredentials([aws(credentialsId: 'jenkis_tst', region: '${AWS_DEFAULT_REGION}')]) {
+                        withCredentials([aws(credentialsId: 'jenkis_tst', region: AWS_DEFAULT_REGION)]) {
                             sh "aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $REPOSITORY_URI"
                         }
 
                         // Etiqueta la imagen
-                        def ecrDockerImage = "$REPOSITORY_URI:$IMAGE_TAG"
-                        sh "docker tag ${dockerImage} ${ecrDockerImage}"
+                        sh "docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $REPOSITORY_URI:$IMAGE_TAG"
 
                         // Sube la imagen a ECR
-                        sh "docker push $ecrDockerImage"
+                        sh "docker push $REPOSITORY_URI:$IMAGE_TAG"
                     }
                 }
             }
