@@ -84,7 +84,7 @@ pipeline {
                         sh "docker build -t $REPOSITORY_URI:$IMAGE_TAG ."
 
                         // Autentica con AWS ECR
-                        withCredentials([aws(credentialsId: 'tu-id-de-credenciales-de-aws', region: '${AWS_DEFAULT_REGION}')]) {
+                        withCredentials([aws(credentialsId: 'jenkis_tst', region: '${AWS_DEFAULT_REGION}')]) {
                             sh "aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $REPOSITORY_URI"
                         }
 
