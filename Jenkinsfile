@@ -84,6 +84,7 @@ pipeline {
 
         stage("Update Image Tag in YAML") {
             steps {
+                dir('/home/ec2-user/workspace/Despliegue/Java-hello') {
                 script {
                     def filePath = '/home/ec2-user/workspace/Despliegue/Java-hello/deployment.yaml'
                     def content = readFile(file: filePath)
@@ -91,6 +92,7 @@ pipeline {
                     writeFile(file: filePath, text: updatedContent)
                     echo "Updated YAML content"
                 }
+              }     
             }
         }
 
