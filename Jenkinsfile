@@ -1,6 +1,11 @@
 pipeline {
     agent {
-        label 'jenkis-slave'
+        label 'jenkins-slave'
+    }
+
+    environment {
+        AWS_DEFAULT_REGION = 'tu-region'  // Reemplaza 'tu-region' con tu región AWS real
+        IMAGE_REPO_NAME = 'my-app-java'
     }
 
     tools {
@@ -22,7 +27,7 @@ pipeline {
         }
 
         stage('SonarQube Analysis') {
-            steps { 
+            steps {
                 // Establecer el directorio de trabajo en la carpeta que contiene pom.xml
                 dir('my-app') {
                     // Eliminar el directorio target para evitar conflictos
@@ -51,14 +56,13 @@ pipeline {
             }
         }
 
-        stages {
-            stage('Limpiar, Construir y Testear') {
-                steps {
-                    dir('/home/ec2-user/workspace/Creation-image/my-app') {
-                        script {
-                            // Limpia, construye y prueba el proyecto Maven
-                            sh 'mvn clean package'
-                            sh 'mvn test'
+        stage('Limpiar, Construir y Testear') {
+            steps {
+                dir('/home/ec2-user/workspace/Creation-image/my-app') {
+                    script {
+                        // Limpia, construye y prueba el proyecto Maven
+                        sh 'mvn clean package'
+                        sh 'mvn test'
                     }
                 }
             }
