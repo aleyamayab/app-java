@@ -4,7 +4,7 @@ pipeline {
     }
 
     environment {
-        AWS_DEFAULT_REGION = 'tu-region'  // Reemplaza 'tu-region' con tu región AWS real
+        AWS_DEFAULT_REGION = 'us-east-1'
         IMAGE_REPO_NAME = 'my-app-java'
     }
 
