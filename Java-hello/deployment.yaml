@@ -4,7 +4,7 @@ metadata:
   name: hola-mundo-deployment
   namespace: app-java  # Reemplaza "nombre-del-namespace" con el nombre deseado del namespace
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: hola-mundo-deployment
@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: hola-mundo-container
-        image: 654654145084.dkr.ecr.us-east-1.amazonaws.com/my-app-java:v1.0.3
+        image: 654654145084.dkr.ecr.us-east-1.amazonaws.com/my-app-java:v1.0.43
         ports:
         - containerPort: 8080
         resources:
