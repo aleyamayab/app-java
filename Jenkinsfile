@@ -11,7 +11,8 @@ pipeline {
     environment {
         AWS_DEFAULT_REGION = 'us-east-1'
         IMAGE_REPO_NAME = 'my-app-java'
-
+    }
+    
     stages {
         stage('Limpiar Area de trabajo') {
             steps {
