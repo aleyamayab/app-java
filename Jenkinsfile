@@ -2,9 +2,6 @@ pipeline {
     agent {
         label 'jenkis-slave'
     }
-
-pipeline {
-    agent any
     
     tools {
         jdk 'java17'
