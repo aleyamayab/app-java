@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: hola-mundo-deployment
-  namespace: test  # Reemplaza "nombre-del-namespace" con el nombre deseado del namespace
+  namespace: app-java  # Reemplaza "nombre-del-namespace" con el nombre deseado del namespace
 spec:
   replicas: 1
   selector:
