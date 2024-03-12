@@ -53,7 +53,7 @@ pipeline {
 
         stage('Clean, Build and Test') {
             steps {
-                dir('/home/ec2-user/workspace/Despliegue/my-app') {
+                dir('/home/ec2-user/workspace/testing/my-app') {
                     script {
                         sh 'mvn clean package'
                         sh 'mvn test'
@@ -64,7 +64,7 @@ pipeline {
 
         stage('Build and Upload Docker Image') {
             steps {
-                dir('/home/ec2-user/workspace/Despliegue/my-app') {
+                dir('/home/ec2-user/workspace/testing/my-app') {
                     script {
                         def IMAGE_TAG = "v1.0.${BUILD_NUMBER}"
                         def REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
@@ -84,10 +84,10 @@ pipeline {
 
         stage('Update image in deployment.yaml') {
             steps {
-                dir('/home/ec2-user/workspace/Despliegue/Java-hello') {
+                dir('/home/ec2-user/workspace/testing/Java-hello') {
                     script {
                         // Definir las variables
-                        def directory = '/home/ec2-user/workspace/Despliegue/Java-hello'
+                        def directory = '/home/ec2-user/workspace/testing/Java-hello'
                         def REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
                         def IMAGE_TAG = "v1.0.${BUILD_NUMBER}"
 
@@ -98,9 +98,17 @@ pipeline {
             }
         }
 
+        stage('Obtener cambios remotos') {
+            steps {
+                dir('/home/ec2-user/workspace/testing/Java-hello') {
+                 sh 'git pull origin main'
+            }
+        }
+    }
+        
         stage('Update Repository') {
             steps {
-               dir('/home/ec2-user/workspace/Despliegue/Java-hello') {
+               dir('/home/ec2-user/workspace/testing/Java-hello') {
                 sh '''
                     git config --global user.name "aleyamayab"
                     git config --global user.email "kingdom_ale@hotmail.com"
