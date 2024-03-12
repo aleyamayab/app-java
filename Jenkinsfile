@@ -81,7 +81,6 @@ pipeline {
                     // Cambia al directorio de trabajo donde se descarga la aplicación y se genera el paquete Maven
                     dir('/home/ec2-user/workspace/Despliegue/my-app') {
                         // Construye la imagen de Docker
-                        sh "rm -f /home/ec2-user/workspace/Despliegue/my-app/target/helloword-0.0.1-SNAPSHOT.jar"
                         sh "docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG ."
                         sh "ls -la /home/ec2-user/workspace/Despliegue/my-app/target"
 
