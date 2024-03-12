@@ -75,7 +75,7 @@ pipeline {
                     def AWS_ACCOUNT_ID="654654145084"
                     def AWS_DEFAULT_REGION="us-east-1" 
                     def IMAGE_REPO_NAME="my-app-java"
-                    def IMAGE_TAG="latest"
+                    def IMAGE_TAG="${BUILD_NUMBER}"-"latest"
                     def REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
 
                     // Cambia al directorio de trabajo donde se descarga la aplicación y se genera el paquete Maven
