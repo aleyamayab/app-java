@@ -4,7 +4,7 @@ metadata:
   name: hola-mundo-deployment
   namespace: app-java  # Reemplaza "nombre-del-namespace" con el nombre deseado del namespace
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: hola-mundo-deployment
