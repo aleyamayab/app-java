@@ -2,13 +2,7 @@ pipeline {
     agent {
         label 'jenkis-slave'
     }
-     environment {
-         AWS_ACCOUNT_ID="654654145084"
-         AWS_DEFAULT_REGION="us-east-1" 
-         IMAGE_REPO_NAME="my-app-java"
-         IMAGE_TAG="latest"
-         REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
- }
+
     tools {
         jdk 'java17'
         maven 'maven'
@@ -70,6 +64,36 @@ pipeline {
             steps {
                 dir('my-app') {
                     sh "mvn test"
+                }
+            }
+        }
+
+        stage('Build and Push Docker Image') {
+            steps {
+                script {
+                    // Define las variables
+                    def AWS_ACCOUNT_ID="654654145084"
+                    def AWS_DEFAULT_REGION="us-east-1" 
+                    def IMAGE_REPO_NAME="my-app-java"
+                    def IMAGE_TAG="latest"
+                    def REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
+
+                    // Cambia al directorio de trabajo donde se descarga la aplicación y se genera el paquete Maven
+                    dir('/home/ec2-user/workspace') {
+                        // Construye la imagen de Docker
+                        sh "docker build -t $REPOSITORY_URI:$IMAGE_TAG ."
+
+                        // Autentica con AWS ECR
+                        withCredentials([aws(credentialsId: 'tu-id-de-credenciales-de-aws', region: '${AWS_DEFAULT_REGION}')]) {
+                            sh "aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $REPOSITORY_URI"
+                        }
+
+                        // Etiqueta la imagen
+                        sh "docker tag $REPOSITORY_URI:$IMAGE_TAG $REPOSITORY_URI:$(date +%Y%m%d%H%M%S)"
+
+                        // Sube la imagen a ECR
+                        sh "docker push $REPOSITORY_URI:$(date +%Y%m%d%H%M%S)"
+                    }
                 }
             }
         }
