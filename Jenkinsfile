@@ -89,10 +89,10 @@ pipeline {
                         }
 
                         // Etiqueta la imagen
-                        sh "docker tag $REPOSITORY_URI:$IMAGE_TAG $REPOSITORY_URI:$(date +%Y%m%d%H%M%S)"
+                        sh "docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${REPOSITORY_URI}"
 
                         // Sube la imagen a ECR
-                        sh "docker push $REPOSITORY_URI:$(date +%Y%m%d%H%M%S)"
+                        sh "docker push $REPOSITORY_URI::${IMAGE_TAG}"
                     }
                 }
             }
