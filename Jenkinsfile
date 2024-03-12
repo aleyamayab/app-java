@@ -101,13 +101,10 @@ pipeline {
                     def filePath = '/home/ec2-user/workspace/Despliegue/Java-hello/deployment.yaml'
                     def content = readFile(file: filePath)
 
-                     // Realiza la actualización usando una expresión regular
-                    def updatedContent = content.replaceAll(/image: (.+\/my-app-java:)(v\d+\.\d+\.\d+)/, "image: ${1}${IMAGE_TAG}")
+                    def updatedContent = content.replaceAll(/image: (.+\/${IMAGE_REPO_NAME}:)(v\d+\.\d+\.\d+)/, "image: ${1}${IMAGE_TAG}")
 
-                    // Escribe el contenido actualizado en el archivo
                     writeFile(file: filePath, text: updatedContent)
 
-                    // Imprime el cambio realizado
                     echo "Updated YAML content:"
                     echo updatedContent
                 }
@@ -117,7 +114,6 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Deploying....'
-                // Agrega aquí los pasos de implementación si es necesario
             }
         }
     }
