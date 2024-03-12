@@ -2,9 +2,9 @@ apiVersion: v1
 kind: Service
 metadata:
   name: hola-mundo-deployment-svc
-  namespace: app-java  # Agregamos el namespace "app-java"
+  namespace: app-java
 spec:
-  type: NodePort
+  type: LoadBalancer  # Cambiamos el tipo de servicio a LoadBalancer
   selector:
     app: hola-mundo-deployment
   ports:
@@ -12,4 +12,3 @@ spec:
     protocol: TCP
     port: 8090
     targetPort: 8090
-
