@@ -3,15 +3,14 @@ pipeline {
         label 'jenkis-slave'
     }
 
-    environment {
-        AWS_DEFAULT_REGION = 'us-east-1'
-        IMAGE_REPO_NAME = 'my-app-java'
-    }
-
     tools {
         jdk 'java17'
         maven 'maven'
     }
+
+    environment {
+        AWS_DEFAULT_REGION = 'us-east-1'
+        IMAGE_REPO_NAME = 'my-app-java'
 
     stages {
         stage('Limpiar Area de trabajo') {
@@ -58,7 +57,7 @@ pipeline {
 
         stage('Limpiar, Construir y Testear') {
             steps {
-                dir('/home/ec2-user/workspace/Creation-image/my-app') {
+                dir('/home/ec2-user/workspace/Despliegue/my-app') {
                     script {
                         // Limpia, construye y prueba el proyecto Maven
                         sh 'mvn clean package'
@@ -70,7 +69,7 @@ pipeline {
 
         stage('Construir y Subir Imagen Docker') {
             steps {
-                dir('/home/ec2-user/workspace/Creation-image/my-app') {
+                dir('/home/ec2-user/workspace/Despliegue/my-app') {
                     script {
                         // Define las variables
                         def AWS_ACCOUNT_ID = '654654145084'
