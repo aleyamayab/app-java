@@ -116,7 +116,7 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                echo 'Deploying....'
+                echo 'Se ha subbido el cambio correctamente'
             }
         }
     }
