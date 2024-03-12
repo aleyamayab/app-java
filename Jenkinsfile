@@ -75,7 +75,7 @@ pipeline {
                     def AWS_ACCOUNT_ID="654654145084"
                     def AWS_DEFAULT_REGION="us-east-1" 
                     def IMAGE_REPO_NAME="my-app-java"
-                    def IMAGE_TAG="${BUILD_NUMBER}_latest"
+                    def IMAGE_TAG="v.1.0_${BUILD_NUMBER}"
                     def REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
 
                     // Cambia al directorio de trabajo donde se descarga la aplicación y se genera el paquete Maven
@@ -90,10 +90,10 @@ pipeline {
                         }
 
                         // Etiqueta la imagen
-                        sh "docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${REPOSITORY_URI}"
+                        sh "docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${REPOSITORY_URI}:latest"
 
                         // Sube la imagen a ECR
-                        sh "docker push $REPOSITORY_URI:${IMAGE_TAG}"
+                        sh "docker push $REPOSITORY_URI:latest"
                     }
                 }
             }
