@@ -82,19 +82,27 @@ pipeline {
             }
         }
 
-        stage("Update Image Tag in YAML") {
+
+        stage('Actualizar imagen en deployment.yaml') {
             steps {
                 dir('/home/ec2-user/workspace/Despliegue/Java-hello') {
                 script {
-                    def filePath = '/home/ec2-user/workspace/Despliegue/Java-hello/deployment.yaml'
-                    def content = readFile(file: filePath)
-                    def updatedContent = content.replaceAll(/image: (.+\/${IMAGE_REPO_NAME}:)(v\d+\.\d+\.\d+)/, "image: ${1}${IMAGE_TAG}")
-                    writeFile(file: filePath, text: updatedContent)
-                    echo "Updated YAML content"
-                }
-              }     
+                // Definir las variables       
+                // Directorio donde se encuentra el archivo deployment.yaml
+                def directory = '/home/ec2-user/workspace/Despliegue/Java-hello'
+            
+                // Ejecutar el comando sed para actualizar la línea en el archivo deployment.yaml
+                sh """"
+                    cat deployment.yaml
+                    "sed -i 's|image: .*|image: ${REPOSITORY_URI}:${IMAGE_TAG}|' ${directory}/deployment.yaml"
+                    cat deployment.yaml
+                  """"
+
+              }
             }
         }
+    }
+
 
         stage ('Update Repositorio') {
             steps {
