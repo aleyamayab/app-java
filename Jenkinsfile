@@ -2,7 +2,7 @@ pipeline {
     agent {
         label 'jenkis-slave'
     }
-    
+      
     tools {
         jdk 'java17'
         maven 'maven'
@@ -11,6 +11,7 @@ pipeline {
     environment {
         AWS_DEFAULT_REGION = 'us-east-1'
         IMAGE_REPO_NAME = 'my-app-java'
+        AWS_ACCOUNT_ID = '654654145084'
     }
 
     stages {
@@ -65,7 +66,6 @@ pipeline {
             steps {
                 dir('/home/ec2-user/workspace/Despliegue/my-app') {
                     script {
-                        def AWS_ACCOUNT_ID = '654654145084'
                         def IMAGE_TAG = "v1.0.${BUILD_NUMBER}"
                         def REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
 
@@ -82,23 +82,20 @@ pipeline {
             }
         }
 
-stage('Actualizar imagen en deployment.yaml') {
-    steps {
-        dir('/home/ec2-user/workspace/Despliegue/Java-hello') {
-            script {
-                // Definir las variables
-                def directory = '/home/ec2-user/workspace/Despliegue/Java-hello'
-                def REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
-                def IMAGE_TAG = "v1.0.${BUILD_NUMBER}"
+        stage('Actualizar imagen en deployment.yaml') {
+            steps {
+                dir('/home/ec2-user/workspace/Despliegue/Java-hello') {
+                    script {
+                        // Definir las variables
+                        def directory = '/home/ec2-user/workspace/Despliegue/Java-hello'
+                        def REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
+                        def IMAGE_TAG = "v1.0.${BUILD_NUMBER}"
 
-                // Ejecutar el comando sed para actualizar la línea en el archivo deployment.yaml
-                sh  "sed -i "s|image: .*|image: ${REPOSITORY_URI}:${IMAGE_TAG}|" ${directory}/deployment.yaml"
-                
+                        // Ejecutar el comando sed para actualizar la línea en el archivo deployment.yaml
+                        sh "sed -i 's|image: .*|image: ${REPOSITORY_URI}:${IMAGE_TAG}|' ${directory}/deployment.yaml"
+                    }
+                }
             }
-        }
-    }
-}
-}
         }
 
         stage('Update Repositorio') {
@@ -122,3 +119,4 @@ stage('Actualizar imagen en deployment.yaml') {
         }
     }
 }
+
