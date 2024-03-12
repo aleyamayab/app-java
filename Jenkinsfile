@@ -81,7 +81,7 @@ pipeline {
                     // Cambia al directorio de trabajo donde se descarga la aplicación y se genera el paquete Maven
                     dir('/home/ec2-user/workspace/Despliegue/my-app') {
                         // Construye la imagen de Docker
-                        sh "docker build -t $REPOSITORY_URI:$IMAGE_TAG ."
+                        sh "docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG ."
 
                         // Autentica con AWS ECR
                         withCredentials([aws(credentialsId: 'jenkis_tst', region: '${AWS_DEFAULT_REGION}')]) {
@@ -92,7 +92,7 @@ pipeline {
                         sh "docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${REPOSITORY_URI}"
 
                         // Sube la imagen a ECR
-                        sh "docker push $REPOSITORY_URI::${IMAGE_TAG}"
+                        sh "docker push $REPOSITORY_URI:${IMAGE_TAG}"
                     }
                 }
             }
