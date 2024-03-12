@@ -82,29 +82,25 @@ pipeline {
             }
         }
 
-
         stage('Actualizar imagen en deployment.yaml') {
             steps {
                 dir('/home/ec2-user/workspace/Despliegue/Java-hello') {
-                script {
-                // Definir las variables       
-                // Directorio donde se encuentra el archivo deployment.yaml
-                def directory = '/home/ec2-user/workspace/Despliegue/Java-hello'
-            
-                // Ejecutar el comando sed para actualizar la línea en el archivo deployment.yaml
-                sh """"
-                    cat deployment.yaml
-                    "sed -i 's|image: .*|image: ${REPOSITORY_URI}:${IMAGE_TAG}|' ${directory}/deployment.yaml"
-                    cat deployment.yaml
-                  """"
+                    script {
+                        // Definir las variables
+                        def directory = '/home/ec2-user/workspace/Despliegue/Java-hello'
+                        def REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
+                        def IMAGE_TAG = "v1.0.${BUILD_NUMBER}"
 
-              }
+                        // Ejecutar el comando sed para actualizar la línea en el archivo deployment.yaml
+                        sh """
+                            sed -i 's|image: .*|image: ${REPOSITORY_URI}:${IMAGE_TAG}|' ${directory}/deployment.yaml
+                        """
+                    }
+                }
             }
         }
-    }
 
-
-        stage ('Update Repositorio') {
+        stage('Update Repositorio') {
             steps {
                 sh '''
                     git config --global user.name "aleyamayab"
