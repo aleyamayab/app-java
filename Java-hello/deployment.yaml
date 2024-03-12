@@ -17,7 +17,7 @@ spec:
       - name: hola-mundo-container
         image: 654654145084.dkr.ecr.us-east-1.amazonaws.com/my-app-java:latest
         ports:
-        - containerPort: 8080
+        - containerPort: 4567
         resources:
           limits:
             memory: 256Mi
