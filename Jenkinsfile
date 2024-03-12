@@ -75,25 +75,26 @@ pipeline {
                     def AWS_ACCOUNT_ID="654654145084"
                     def AWS_DEFAULT_REGION="us-east-1" 
                     def IMAGE_REPO_NAME="my-app-java"
-                    def IMAGE_TAG="v.1.0_${BUILD_NUMBER}"
+                    def IMAGE_TAG="v1.0.${BUILD_NUMBER}"
                     def REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
 
                     // Cambia al directorio de trabajo donde se descarga la aplicación y se genera el paquete Maven
                     dir('/home/ec2-user/workspace/Despliegue/my-app') {
                         // Construye la imagen de Docker
-                        sh "docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG ."
-                        sh "ls -la /home/ec2-user/workspace/Despliegue/my-app/target"
-
+                        def dockerImage = "$IMAGE_REPO_NAME:$IMAGE_TAG"
+                        sh "docker build -t $dockerImage ."
+                        
                         // Autentica con AWS ECR
                         withCredentials([aws(credentialsId: 'jenkis_tst', region: '${AWS_DEFAULT_REGION}')]) {
                             sh "aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $REPOSITORY_URI"
                         }
 
                         // Etiqueta la imagen
-                        sh "docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${REPOSITORY_URI}:latest"
+                        def ecrDockerImage = "$REPOSITORY_URI:$IMAGE_TAG"
+                        sh "docker tag ${dockerImage} ${ecrDockerImage}"
 
                         // Sube la imagen a ECR
-                        sh "docker push $REPOSITORY_URI:latest"
+                        sh "docker push $ecrDockerImage"
                     }
                 }
             }
