@@ -100,6 +100,7 @@ pipeline {
 
         stage('Update Repositorio') {
             steps {
+               dir('/home/ec2-user/workspace/Despliegue/Java-hello') {
                 sh '''
                     git config --global user.name "aleyamayab"
                     git config --global user.email "kingdom_ale@hotmail.com"
@@ -111,6 +112,7 @@ pipeline {
                 }
             }
         }
+        }  
 
         stage('Deploy') {
             steps {
