@@ -79,7 +79,7 @@ pipeline {
                     def REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
 
                     // Cambia al directorio de trabajo donde se descarga la aplicación y se genera el paquete Maven
-                    dir('/home/ec2-user/workspace') {
+                    dir('/home/ec2-user/workspace/Despliegue/my-app') {
                         // Construye la imagen de Docker
                         sh "docker build -t $REPOSITORY_URI:$IMAGE_TAG ."
 
