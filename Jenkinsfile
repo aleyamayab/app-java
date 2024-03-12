@@ -100,16 +100,25 @@ pipeline {
                 script {
                     def filePath = '/home/ec2-user/workspace/Despliegue/Java-hello/deployment.yaml'
                     def content = readFile(file: filePath)
-
                     def updatedContent = content.replaceAll(/image: (.+\/${IMAGE_REPO_NAME}:)(v\d+\.\d+\.\d+)/, "image: ${1}${IMAGE_TAG}")
-
                     writeFile(file: filePath, text: updatedContent)
-
-                    echo "Updated YAML content:"
-                    echo updatedContent
+                    echo "Updated YAML content"
                 }
             }
         }
+
+        stage ('Update Repositorio') {
+            step {
+                sh """"
+                    git config --global user.name "aleyamayab"
+                    git config --global user.mail "kingdom_ale@hotmail.com"
+                    git add deployment.yaml
+                    git commit -m "Update Deployment version"
+                   """"
+                withCredential([gitUsernamePassword(credentialsId: 'github', gitToolName: 'Default')]) {
+                    sh "git push 'https://github.com/aleyamayab/app-java main"
+         }    
+           }
 
         stage('Deploy') {
             steps {
