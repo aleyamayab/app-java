@@ -15,13 +15,13 @@ pipeline {
     }
 
     stages {
-        stage('Limpiar Area de trabajo') {
+        stage('Clean work area') {
             steps {
                 cleanWs()
             }
         }
 
-        stage('Buscar SCM') {
+        stage('Search SCM') {
             steps {
                 git branch: 'main', credentialsId: 'github', url: 'https://github.com/aleyamayab/app-java'
             }
@@ -51,7 +51,7 @@ pipeline {
             }
         }
 
-        stage('Limpiar, Construir y Testear') {
+        stage('Clean, Build and Test') {
             steps {
                 dir('/home/ec2-user/workspace/Despliegue/my-app') {
                     script {
@@ -62,7 +62,7 @@ pipeline {
             }
         }
 
-        stage('Construir y Subir Imagen Docker') {
+        stage('Build and Upload Docker Image') {
             steps {
                 dir('/home/ec2-user/workspace/Despliegue/my-app') {
                     script {
@@ -82,7 +82,7 @@ pipeline {
             }
         }
 
-        stage('Actualizar imagen en deployment.yaml') {
+        stage('Update image in deployment.yaml') {
             steps {
                 dir('/home/ec2-user/workspace/Despliegue/Java-hello') {
                     script {
@@ -98,7 +98,7 @@ pipeline {
             }
         }
 
-        stage('Update Repositorio') {
+        stage('Update Repository') {
             steps {
                dir('/home/ec2-user/workspace/Despliegue/Java-hello') {
                 sh '''
