@@ -5,8 +5,10 @@ metadata:
   namespace: test
 spec:
   selector:
-    app: testing
+    type: LoadBalancer
   ports:
     - port: 80
-      targetPort: 5111
-  type: LoadBalancer
+      targetPort: 80
+      name: http
+  selector:
+    role: test
