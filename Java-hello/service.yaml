@@ -1,21 +1,13 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: v1
+kind: Service
 metadata:
-  name: test-service
+  name: test-service-lb
   namespace: test
 spec:
-  replicas: 1
   selector:
-    matchLabels:
-      role: test
-  template:
-    metadata:
-      labels:
-        role: test
-    spec:
-      containers:
-      - name: test-service
-        image: 654654145084.dkr.ecr.us-east-1.amazonaws.com/my-app-java:v1.0.2
-        imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: 80
+    role: test
+  ports:
+    - port: 80
+      targetPort: 80
+      name: http
+  type: LoadBalancer
