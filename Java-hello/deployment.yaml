@@ -5,6 +5,9 @@ metadata:
   namespace: test
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      role: test
   template:
     metadata:
       labels:
@@ -14,5 +17,5 @@ spec:
       - name: test-service
         image: 654654145084.dkr.ecr.us-east-1.amazonaws.com/my-app-java:v1.0.2
         imagePullPolicy: IfNotPresent
-        port:
+        ports:
         - containerPort: 80
