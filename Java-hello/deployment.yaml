@@ -3,18 +3,16 @@ kind: Deployment
 metadata:
   name: test-service
   namespace: test
-  labels:  # Se corrigió el nombre de este campo
-    app: testing  # Se corrigió la indentación de este campo
 spec:
   replicas: 1
-  selector:
-    matchLabels:
-      app: testing
   template:
     metadata:
       labels:
-        app: testing
+        role: test
     spec:
       containers:
-      - name: testing
+      - name: test-service
         image: 654654145084.dkr.ecr.us-east-1.amazonaws.com/my-app-java:v1.0.2
+        imagePullPolicy: IfNotPresent
+        port:
+        - containerPort: 80
