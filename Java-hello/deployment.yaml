@@ -15,10 +15,10 @@ spec:
     spec:
       containers:
       - name: test-service
-        image: 654654145084.dkr.ecr.us-east-1.amazonaws.com/my-app-java:v1.0.2
+        image: 654654145084.dkr.ecr.us-east-1.amazonaws.com/imagen_ale:latest-v2
         imagePullPolicy: IfNotPresent
         ports:
-        - containerPort: 80
+        - containerPort: 8090
         resources:
           limits:
             cpu: "1"
