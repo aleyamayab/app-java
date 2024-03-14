@@ -7,7 +7,7 @@ spec:
   selector:
     role: test
   ports:
-    - port: 80
-      targetPort: 80
+    - port: 80  # Puerto expuesto por el servicio de LoadBalancer
+      targetPort: 8090  # Puerto en el que tu aplicación está escuchando en los pods
       name: http
-  type: LoadBalancer
+  type: LoadBalancer  # Define el servicio como tipo LoadBalancer
