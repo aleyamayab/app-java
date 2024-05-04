@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class HelloWorldController {
-        @RequestMapping("/")
+        @RequestMapping("/app")
         public String helloworld() {
             return "Este es un nuevo intento, lo lograste!";
     }
